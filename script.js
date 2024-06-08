@@ -2,7 +2,7 @@
 
 const account1 = {
   owner: 'Jonas Schmedtmann',
-  movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
+  movements: [200, 450, -400, -3000, -650, -130, 70, 1300],
   interestRate: 1.2, // %
   pin: 1111,
 };
@@ -56,48 +56,22 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-// LECTURES
+const displayMovements = function (movements) {
+  containerMovements.innerHTML = '';
+  movements.forEach((mov, i) => {
+    const type = mov >= 0 ? 'deposit' : 'withdrawal';
 
-/////////////////////////////////////////////////
-/*
-let arr = ['a', 'b', 'c', 'd'];
-console.log(arr.valueOf());
-console.log(arr.at(0));
+    const html = ` 
+        <div class="movements__row">
+          <div class="movements__type movements__type--${type}">${
+      i + 1
+    } ${type}</div>
+          
+          <div class="movements__value">${mov}</div>
+        `;
 
-console.log(arr.at(-1));
+    containerMovements.insertAdjacentHTML('afterbegin', html);
+  });
+};
 
-const str = 'hi there nigga';
-console.log(str.at(-5));
-
-for (const [i, movement] of movements.entries()) {
-  if (movement > 0) {
-    console.log('you deposited', `${movement}`);
-  } else {
-    console.log(`you withdraw ${Math.abs(movement)}`);
-  }
-}
-  const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
-
-console.log('foreach loop');
-
-movements.forEach((movement, index, array) => {
-  if (movement > 0) {
-    console.log('you deposited', `${movement}`);
-  } else {
-    console.log(`you withdraw ${Math.abs(movement)}`);
-  }
-});
-
-const currencies = new Map([
-  ['USD', 'United States dollar'],
-  ['EUR', 'Euro'],
-  ['GBP', 'Pound sterling'],
-]);
-
-currencies.forEach((value, key, map) => {
-  console.log(`${key} : ${value}`);
-});
-
-*/
+displayMovements(account1.movements);
