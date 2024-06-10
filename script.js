@@ -84,6 +84,41 @@ const calcDisplayBalance = function (movements) {
 
 calcDisplayBalance(account1.movements);
 
+const calcDisplaySummary = function (movements) {
+  const incomes = movements
+    .filter(function (mov) {
+      if (mov > 0) {
+        return mov;
+      }
+    })
+    .reduce(function (acc, mov) {
+      return acc + mov;
+    }, 0);
+
+  const debits = movements
+    .filter(function (mov) {
+      if (mov < 0) {
+        return mov;
+      }
+    })
+    .reduce((acc, mov) => acc + mov, 0);
+
+  const intrest = movements
+    .filter(function (mov) {
+      if (mov > 0) {
+        return mov;
+      }
+    })
+    .map(deposits => (deposits * 1.2) / 100)
+    .filter(int => int >= 1)
+    .reduce((acc, mov) => acc + mov, 0);
+
+  labelSumIn.textContent = `${incomes} EUR`;
+  labelSumOut.textContent = `${Math.abs(debits)} EUR`;
+  labelSumInterest.textContent = `${intrest} EUR`;
+};
+calcDisplaySummary(account1.movements);
+
 const createUserName = function (accs) {
   accs.forEach(acc => {
     acc.username = acc.owner
@@ -102,6 +137,8 @@ createUserName(accounts);
 
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
+//create max value
+
 //accumulator is like a snowball
 /*
 const balance = movements.reduce(function (acc, cur, i, arr) {
@@ -110,4 +147,30 @@ const balance = movements.reduce(function (acc, cur, i, arr) {
 }, 0);
 
 console.log(balance);
+const maxnumber = function () {
+  const max = movements.reduce(function (acc, mov, i, arr) {
+    if (acc < mov) {
+      return mov;
+    } else {
+      return acc;
+    }
+  }, 0);
+  console.log(max);
+};
+maxnumber(movements);
 */
+
+//Pipeline
+
+const totalDepositinUSD = movements
+  .filter(function (mov) {
+    return mov > 0;
+  })
+  .map(function (mov) {
+    return mov * 1.1;
+  })
+  .reduce(function (acc, mov) {
+    return acc + mov;
+  }, 0);
+
+console.log(totalDepositinUSD);
