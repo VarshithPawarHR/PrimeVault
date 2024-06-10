@@ -2,7 +2,7 @@
 
 const account1 = {
   owner: 'Jonas Schmedtmann',
-  movements: [200, 450, -400, -3000, -650, -130, 70, 1300],
+  movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
   interestRate: 1.2, // %
   pin: 1111,
 };
@@ -75,6 +75,14 @@ const displayMovements = function (movements) {
 };
 
 displayMovements(account1.movements);
+const calcDisplayBalance = function (movements) {
+  const balance = movements.reduce(function (acc, mov) {
+    return acc + mov;
+  }, 0);
+  labelBalance.textContent = `${balance} EUR`;
+};
+
+calcDisplayBalance(account1.movements);
 
 const createUserName = function (accs) {
   accs.forEach(acc => {
@@ -91,3 +99,15 @@ createUserName(accounts);
 
 //const euroToUsd = 1.1;
 //const movementsUSD = movements.map(mov => mov * euroToUsd);
+
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+//accumulator is like a snowball
+/*
+const balance = movements.reduce(function (acc, cur, i, arr) {
+  console.log(`iteration no ${i} : ${acc}`);
+  return acc + cur;
+}, 0);
+
+console.log(balance);
+*/
