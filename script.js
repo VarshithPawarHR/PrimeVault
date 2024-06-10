@@ -75,3 +75,19 @@ const displayMovements = function (movements) {
 };
 
 displayMovements(account1.movements);
+
+const createUserName = function (accs) {
+  accs.forEach(acc => {
+    acc.username = acc.owner
+      .toLowerCase()
+      .split(' ')
+      .map(function (name) {
+        return name[0];
+      })
+      .join('');
+  });
+};
+createUserName(accounts);
+
+//const euroToUsd = 1.1;
+//const movementsUSD = movements.map(mov => mov * euroToUsd);
