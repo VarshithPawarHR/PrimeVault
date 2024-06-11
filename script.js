@@ -59,9 +59,11 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 let currentaccount;
 
-const displayMovements = function (movements) {
+const displayMovements = function (movements, sort = false) {
   containerMovements.innerHTML = '';
-  movements.forEach((mov, i) => {
+  const mov = sort ? movements.slice().sort((a, b) => a - b) : movements;
+
+  mov.forEach((mov, i) => {
     const type = mov >= 0 ? 'deposit' : 'withdrawal';
 
     const html = `
@@ -205,6 +207,16 @@ btnLoan.addEventListener('click', function (e) {
   } else {
     alert('Loan not granted ,Thank you');
   }
+});
+
+//sorting
+
+let sorted = false;
+btnSort.addEventListener('click', function (e) {
+  e.preventDefault();
+  displayMovements(currentaccount.movements, !sorted);
+
+  sorted = !sorted; //toggle the sorted ones to set true or false
 });
 
 //const euroToUsd = 1.1;
