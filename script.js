@@ -76,23 +76,23 @@ const displayMovements = function (movements) {
   });
 };
 
-const calcDisplayBalance = function (movements) {
-  const balance = movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${balance} EUR`;
+const calcDisplayBalance = function (acc) {
+  acc.balance = acc.movements.reduce((sum, mov) => sum + mov, 0);
+  labelBalance.textContent = `${acc.balance} EUR`;
 };
 
-const calcDisplaySummary = function (movements, interestRate) {
-  const incomes = movements
+const calcDisplaySummary = function (acc) {
+  const incomes = acc.movements
     .filter(mov => mov > 0)
-    .reduce((acc, mov) => acc + mov, 0);
-  const debits = movements
+    .reduce((sum, mov) => sum + mov, 0);
+  const debits = acc.movements
     .filter(mov => mov < 0)
-    .reduce((acc, mov) => acc + mov, 0);
-  const interest = movements
+    .reduce((sum, mov) => sum + mov, 0);
+  const interest = acc.movements
     .filter(mov => mov > 0)
-    .map(deposit => (deposit * interestRate) / 100)
+    .map(deposit => (deposit * acc.interestRate) / 100)
     .filter(int => int >= 1)
-    .reduce((acc, int) => acc + int, 0);
+    .reduce((sum, int) => sum + int, 0);
 
   labelSumIn.textContent = `${incomes} EUR`;
   labelSumOut.textContent = `${Math.abs(debits)} EUR`;
@@ -134,11 +134,37 @@ btnLogin.addEventListener('click', function (e) {
     displayMovements(currentaccount.movements);
 
     // Display balance
-    calcDisplayBalance(currentaccount.movements);
+    calcDisplayBalance(currentaccount);
 
     // Display summary
-    calcDisplaySummary(currentaccount.movements, currentaccount.interestRate);
+    calcDisplaySummary(currentaccount);
   }
+});
+
+btnTransfer.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  const amount = Number(inputTransferAmount.value);
+  const receiver = accounts.find(acc => acc.username === inputTransferTo.value);
+
+  if (
+    amount > 0 &&
+    receiver &&
+    currentaccount.balance >= amount &&
+    receiver.username !== currentaccount.username
+  ) {
+    currentaccount.movements.push(-amount);
+    receiver.movements.push(amount);
+
+    // Update UI
+    displayMovements(currentaccount.movements);
+    calcDisplayBalance(currentaccount);
+    calcDisplaySummary(currentaccount);
+  }
+
+  // Clear input fields
+  inputTransferTo.value = '';
+  inputTransferAmount.value = '';
 });
 
 //const euroToUsd = 1.1;
