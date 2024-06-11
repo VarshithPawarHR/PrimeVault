@@ -167,6 +167,46 @@ btnTransfer.addEventListener('click', function (e) {
   inputTransferAmount.value = '';
 });
 
+btnClose.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  if (
+    currentaccount.username === inputCloseUsername.value &&
+    currentaccount.pin === Number(inputClosePin.value)
+  ) {
+    const index = accounts.findIndex(
+      acc => acc.username === currentaccount.username
+    );
+    console.log(index);
+    //delete account
+
+    accounts.splice(index, 1);
+
+    //hide ui
+
+    containerApp.style.opacity = 0;
+  }
+});
+
+//loan granted if one deposit is 10% of requested loan amount
+
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  const amount = Number(inputLoanAmount.value);
+
+  if (amount > 0 && currentaccount.movements.some(mov => mov >= amount * 0.1)) {
+    currentaccount.movements.push(amount);
+    displayMovements(currentaccount.movements);
+    calcDisplayBalance(currentaccount);
+    calcDisplaySummary(currentaccount);
+
+    inputLoanAmount.value = '';
+  } else {
+    alert('Loan not granted ,Thank you');
+  }
+});
+
 //const euroToUsd = 1.1;
 //const movementsUSD = movements.map(mov => mov * euroToUsd);
 
@@ -208,3 +248,5 @@ const totalDepositinUSD = movements
 
 console.log(totalDepositinUSD);
 */
+
+//EVERY
