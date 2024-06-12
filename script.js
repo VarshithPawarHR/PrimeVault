@@ -248,9 +248,24 @@ btnSort.addEventListener('click', function (e) {
   sorted = !sorted;
 });
 
+const date = new Date();
+const day = `${date.getDate()}`.padStart(2, 0);
+const month = `${date.getMonth()}`.padStart(2, 0);
+const year = date.getFullYear();
+const hour = date.getHours();
+const min = date.getMinutes();
+
+labelDate.textContent = `${day}/${month}/${year}`;
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
 
 //PARSING
-console.log(Number('23'));
+
+//create date // four ways
+
+const now = new Date();
+console.log(now);
+
+console.log(new Date(account1.movementsDates[0]));
